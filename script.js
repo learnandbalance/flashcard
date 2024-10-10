@@ -2,7 +2,7 @@ let flashcards = [];
 let currentCard = 0;
 
 async function fetchFlashcards() {
-    const response = await fetch('vocabulary02.json');  // For CSV, you'll parse it differently
+    const response = await fetch('vocabulary01.json');  // For CSV, you'll parse it differently
     flashcards = await response.json();  // Adjust based on your CSV format
     showCard(currentCard);
 }
