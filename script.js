@@ -1,39 +1,40 @@
 let flashcards = [];
 let currentCard = 0;
 
-// Fetch the JSON data
 async function fetchFlashcards() {
-    const response = await fetch('vocabulary01.json');  // This is where your JSON file is loaded
+    const response = await fetch('vocabulary01.json');  // Load your JSON file
     flashcards = await response.json();
     showCard(currentCard);
 }
 
-// Display the current flashcard
 function showCard(index) {
     if (flashcards.length > 0) {
-        document.getElementById('question').innerText = flashcards[index].Word;  // Adjusting to 'Word' key
-        document.getElementById('answer').style.display = 'none';  // Hide the answer initially
+        document.getElementById('question').innerText = flashcards[index].Word;  // Show the word
+        document.getElementById('answer').style.display = 'none';  // Initially hide the details
     } else {
         console.log("No flashcards found.");
     }
 }
 
-// Toggle between showing the question and the answer
 document.getElementById('toggle').addEventListener('click', () => {
     const answer = document.getElementById('answer');
     if (answer.style.display === 'none') {
+        // Show full details: Definition, Verb Forms, and Turkish Translation
+        const card = flashcards[currentCard];
+        answer.innerHTML = `
+            <strong>Definition:</strong> ${card.Definition}<br><br>
+            <strong>Turkish Translation:</strong> ${card["Turkish Translation"]}<br><br>
+            ${card["Verb Form (if applicable)"] ? `<strong>Verb Form:</strong> ${card["Verb Form (if applicable)"]}<br><br>` : ""}
+        `;
         answer.style.display = 'block';
-        answer.innerText = flashcards[currentCard].Definition;  // Display the 'Definition' when showing answer
     } else {
         answer.style.display = 'none';
     }
 });
 
-// Move to the next card
 document.getElementById('next').addEventListener('click', () => {
     currentCard = (currentCard + 1) % flashcards.length;
     showCard(currentCard);
 });
 
-// Call the function to load the flashcards when the page is ready
 fetchFlashcards();
